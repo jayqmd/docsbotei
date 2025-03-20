@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DocsBot Chat</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            background-color: #f4f4f4; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            height: 100vh; 
+            margin: 0;
+            flex-direction: column;
+        }
+        #passwordPrompt {
+            background: white;
+            padding: 20px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            text-align: center;
+        }
+        input {
+            padding: 10px;
+            margin: 10px;
+            font-size: 16px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div id="passwordPrompt">
+        <h2>Enter Password</h2>
+        <input type="password" id="passwordInput" placeholder="Enter Password">
+        <button onclick="checkPassword()">Submit</button>
+    </div>
+
+    <script>
+        function checkPassword() {
+            var password = document.getElementById("passwordInput").value;
+            if (password === "EI123") {
+                document.getElementById("passwordPrompt").style.display = "none";
+                loadDocsBot(); // Only load DocsBot widget after correct password
+            } else {
+                alert("Incorrect password. Access denied.");
+            }
+        }
+
+        function loadDocsBot() {
+            window.DocsBotAI = window.DocsBotAI || {};
+            DocsBotAI.init = function(e) {
+                return new Promise((t, r) => {
+                    var n = document.createElement("script");
+                    n.type = "text/javascript", n.async = !0, n.src = "https://widget.docsbot.ai/chat.js";
+                    let o = document.getElementsByTagName("script")[0] || document.body;
+                    o.parentNode.insertBefore(n, o), n.addEventListener("load", () => {
+                        let n;
+                        Promise.all([
+                            new Promise((t, r) => {
+                                window.DocsBotAI.mount(Object.assign({}, e)).then(t).catch(r);
+                            }),
+                            (n = function e(t) {
+                                return new Promise(e => {
+                                    if (document.querySelector(t)) return e(document.querySelector(t));
+                                    let r = new MutationObserver(n => {
+                                        if (document.querySelector(t)) return e(document.querySelector(t)), r.disconnect();
+                                    });
+                                    r.observe(document.body, { childList: !0, subtree: !0 });
+                                });
+                            })("#docsbotai-root"),
+                        ]).then(() => t()).catch(r);
+                    }), n.addEventListener("error", e => { r(e.message) });
+                });
+            };
+
+            DocsBotAI.init({ id: "6PnSRHgikzIwMPwq2oZ4/mfVY2zPVKOCqs7wDnKFM" });
+        }
+    </script>
+</body>
+</html>
